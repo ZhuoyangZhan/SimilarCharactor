@@ -1,18 +1,17 @@
 # coding=gbk
-from Dict import TrAngle as dict1  # ËÄÂë×Öµä
-import Character  # °üº¬ËùÓÐºº×ÖµÄÁÐ±í
-from tqdm import tqdm  # ½ø¶ÈÌõ
-from writenumDict import write_num_dict as dict2  # ±Ê»­Êý×Öµä
-from Dict import structure_dict as dict3  # ½á¹¹×Öµä
+from Dict import TrAngle as dict1  # å››ç å­—å…¸
+import Character  # åŒ…å«æ‰€æœ‰æ±‰å­—çš„åˆ—è¡¨
+from tqdm import tqdm  # è¿›åº¦æ¡
+from writenumDict import write_num_dict as dict2  # ç¬”ç”»æ•°å­—å…¸
+from Dict import structure_dict as dict3  # ç»“æž„å­—å…¸
 from Pronunciation import pronunciation_index
 
 lst = Character.Symbol_lst()
 
 file1 = open('D:/py/Shape.txt', 'w')
 
-
-def get_similar(char1,char2):  # char1,char2Îªºº×Ö
-    # »ñÈ¡ËÄÂëºÍºº×Ö±Ê»­Êý
+def get_similar(char1,char2):  # char1,char2ä¸ºæ±‰å­—
+    # èŽ·å–å››ç å’Œæ±‰å­—ç¬”ç”»æ•°
     code1 = dict1[char1]
     code2 = dict1[char2]
     write_num1 = int(dict2[char1])
@@ -20,26 +19,26 @@ def get_similar(char1,char2):  # char1,char2Îªºº×Ö
     structure1 = dict3.setdefault(char1, None)
     structure2 = dict3.setdefault(char2, None)
 
-    # ¶¨Òå½á¹¹ÏàËÆ¶È
+    # å®šä¹‰ç»“æž„ç›¸ä¼¼åº¦
     if structure1 and structure2 and structure1 == structure2:
         structure_index = 1
     else:
         structure_index = 0
 
-    # ¶¨ÒåËÄÂëÏàËÆ¶È
+    # å®šä¹‰å››ç ç›¸ä¼¼åº¦
     code_index = 0
-    # ËÄÂë·ÖÎªËÄÎ»¼ÆËã£¬ÈôÏàÍ¬ÔòÖ¸Êý+1£¬²»Í¬Îª0,×ÜÈ¨Êý³ýÒÔ4ÔÙ¼ÓÈ¨
+    # å››ç åˆ†ä¸ºå››ä½è®¡ç®—ï¼Œè‹¥ç›¸åŒåˆ™æŒ‡æ•°+1ï¼Œä¸åŒä¸º0,æ€»æƒæ•°é™¤ä»¥4å†åŠ æƒ
     for _i in range(4):
         if code1[_i] == code2[_i]:
             code_index += 1
     code_index /= 4
 
-    # Ìí¼Ó·¢ÒôÏàËÆ¶È
+    # æ·»åŠ å‘éŸ³ç›¸ä¼¼åº¦
     voice_index = pronunciation_index(char1,char2)
 
-    # ±Ê»­ÊýÀûÓÃÏà¶ÔÆ«²îµÄ·½Ê½½øÐÐ¼ÆËã
+    # ç¬”ç”»æ•°åˆ©ç”¨ç›¸å¯¹åå·®çš„æ–¹å¼è¿›è¡Œè®¡ç®—
     write_num_index = 1- abs((write_num1 - write_num2)/max(write_num1,write_num2))
-    # ËÄÂëÈ¨ÖØ¡¢±Ê»­È¨ÖØºÍ½á¹¹È¨ÖØ·Ö±ðÎªÎª 0.4 0.3 0.3
+    # å››ç æƒé‡ã€ç¬”ç”»æƒé‡å’Œç»“æž„æƒé‡åˆ†åˆ«ä¸ºä¸º 0.4 0.3 0.3
     write_index = code_index * 0.4 + write_num_index * 0.3 + structure_index * 0.3
     similarity_index_ = write_index * 0.5 + voice_index * 0.5
 
@@ -47,14 +46,14 @@ def get_similar(char1,char2):  # char1,char2Îªºº×Ö
 
 
 def main():
-    print('ÐÎ½ü×ÖÅÐ¶ÏÐ´ÈëÖÐ...')
+    print('å½¢è¿‘å­—åˆ¤æ–­å†™å…¥ä¸­...')
     for i in tqdm(lst):
         file1.write(i+' ')
         for j in lst:
             if i == j:
                 pass
             else:
-                # Éè¼ÆÒ»¸ö¼ÓÈ¨Òô×ÖÐÎÏàËÆ¶ÈËã·¨£¬¸ù¾Ý±Ê»­ÊýºÍËÄÂëÏà½ü³Ì¶ÈÀ´ÅÐ¶Ï£¬Èô´óÓÚÄ³Ò»¸öãÐÖµ£¬ÔòÐ´ÈëÏà½ü×ÖÎÄ¼þ
+                # è®¾è®¡ä¸€ä¸ªåŠ æƒéŸ³å­—å½¢ç›¸ä¼¼åº¦ç®—æ³•ï¼Œæ ¹æ®ç¬”ç”»æ•°å’Œå››ç ç›¸è¿‘ç¨‹åº¦æ¥åˆ¤æ–­ï¼Œè‹¥å¤§äºŽæŸä¸€ä¸ªé˜ˆå€¼ï¼Œåˆ™å†™å…¥ç›¸è¿‘å­—æ–‡ä»¶
                 write_index, voice_index, similarity_index = get_similar(i,j)
                 if (voice_index == 1 and write_index >= 0.6) or write_index >= 0.9:
                     file1.write(j)
